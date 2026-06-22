@@ -1,0 +1,18 @@
+[
+  {
+    "Nomes": "Fundo Brasil de Direitos Humanos",
+    "Link": "https://www.fundobrasil.org.br/edital/direitos-digitais-2026/",
+    "Resumo": "Apoio a projetos voltados ao fortalecimento institucional e direitos digitais.",
+    "Prazo de inscrição": "19 de dezembro de 2026",
+    "Valor do edital": "R$ 80.000,00 até R$ 160.000,00",
+    "Período de execução do projeto": "Máximo de 12 meses"
+  },
+  {
+    "Nomes": "Edital Exemplo Passado (Teste Visual)",
+    "Link": "#",
+    "Resumo": "Isso é apenas um card de exemplo com data no passado para visualizarmos as regras de opacidade e ordenação em ação.",
+    "Prazo de inscrição": "15 de janeiro de 2024",
+    "Valor do edital": "R$ 50.000,00",
+    "Período de execução do projeto": "6 meses"
+  }
+]

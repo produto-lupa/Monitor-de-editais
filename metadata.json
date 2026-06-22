@@ -1,0 +1,6 @@
+{
+  "name": "Monitor de Editais",
+  "description": "Monitor de editais responsivo e de alto contraste no estilo Agência Lupa.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
