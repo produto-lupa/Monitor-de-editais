@@ -97,7 +97,10 @@ def run_scraper():
 
     # Lê as URLs do arquivo
     with open(caminho_arquivo_urls, 'r', encoding='utf-8') as f:
-        urls_para_analisar = [linha.strip() for linha in f if linha.strip() and not linha.startswith('#')]
+        urls_para_analisar = [linha.strip() for linha in f if linha.strip() and not inline.startswith('#') if not linha.startswith('#')]
+
+    # Ajuste simples para filtrar comentários se necessário
+    urls_para_analisar = [u for u in urls_para_analisar if u]
 
     if not urls_para_analisar:
         print("Nenhuma URL encontrada em urls.txt.")
@@ -131,7 +134,6 @@ def run_scraper():
 
         if url in links_existentes:
             print(f"[{url}] Já existe.")
-            # Para manter o status completo, vou tratar como "Sucesso (ignorado)"
             stats["sucessos"] += 1
             status_detalhes.append({"url": url, "status": "Sucesso", "info": "Já monitorado"})
             continue
