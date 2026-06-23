@@ -86,7 +86,7 @@ def run_scraper():
     print("Iniciando fase de raspagem...\n")
     
     diretorio_atual = os.path.dirname(os.path.abspath(__file__))
-    caminho_arquivo_json = os.path.join(diretorio_atual, 'public', 'editais.json')
+    caminho_arquivo_json = os.path.join(diretorio_atual, 'editais.json')
     caminho_arquivo_urls = os.path.join(diretorio_atual, 'urls.txt')
     
     # Valida se o arquivo urls.txt existe
