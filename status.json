@@ -1,0 +1,116 @@
+{
+    "ultima_atualizacao": "23/06/2026 às 14:11",
+    "resumo": {
+        "total_sites": 21,
+        "sucessos": 3,
+        "recusados": 15,
+        "erros": 3
+    },
+    "detalhes": [
+        {
+            "url": "https://www.abraji.org.br/publicacoes",
+            "status": "Recusado",
+            "info": "Nenhum edital ativo"
+        },
+        {
+            "url": "https://ajor.org.br",
+            "status": "Erro",
+            "info": "403 Client Error: Forbidden for url: https://ajor.org.br/"
+        },
+        {
+            "url": "https://journalism.nyu.edu/career-services/fellowships-and-annual-programs/",
+            "status": "Recusado",
+            "info": "Nenhum edital ativo"
+        },
+        {
+            "url": "https://codesinfo.org.br",
+            "status": "Erro",
+            "info": "HTTPSConnectionPool(host='codesinfo.org.br', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(\"HTTPSConnection(host='codesinfo.org.br', port=443): Failed to resolve 'codesinfo.org.br' ([Errno -2] Name or service not known)\"))"
+        },
+        {
+            "url": "https://www.fundacaoitau.org.br/noticias",
+            "status": "Recusado",
+            "info": "Nenhum edital ativo"
+        },
+        {
+            "url": "https://www.fundobrasil.org.br/nosso-trabalho/apoio-a-sociedade-civil/editais-gerais-e-especificos/?status=aberto",
+            "status": "Recusado",
+            "info": "Nenhum edital ativo"
+        },
+        {
+            "url": "https://fundodejornalismo.com.br/",
+            "status": "Recusado",
+            "info": "Nenhum edital ativo"
+        },
+        {
+            "url": "https://blog.google/intl/pt-br/novidades/",
+            "status": "Recusado",
+            "info": "Nenhum edital ativo"
+        },
+        {
+            "url": "https://www.poynter.org/ifcn/grants-ifcn/globalfactcheckfund/",
+            "status": "Erro",
+            "info": "403 Client Error: Forbidden for url: https://www.poynter.org/ifcn/grants-ifcn/globalfactcheckfund/"
+        },
+        {
+            "url": "https://serrapilheira.org/programa-de-jornalismo-e-midia/",
+            "status": "Recusado",
+            "info": "Nenhum edital ativo"
+        },
+        {
+            "url": "https://journalismsciencealliance.eu/grants2026/",
+            "status": "Sucesso",
+            "info": "Call for applications 2026 – Journalism Science Alliance Grants 2026"
+        },
+        {
+            "url": "https://journalismai.info",
+            "status": "Recusado",
+            "info": "Nenhum edital ativo"
+        },
+        {
+            "url": "https://www.journalismfund.eu/grants",
+            "status": "Sucesso",
+            "info": "Belgian Bridge"
+        },
+        {
+            "url": "https://mediaimpactfunders.org/our-work/news/",
+            "status": "Recusado",
+            "info": "Nenhum edital ativo"
+        },
+        {
+            "url": "https://oneworldmedia.org.uk/latest/",
+            "status": "Recusado",
+            "info": "Nenhum edital ativo"
+        },
+        {
+            "url": "https://www.opensocietyfoundations.org/newsroom",
+            "status": "Recusado",
+            "info": "Nenhum edital ativo"
+        },
+        {
+            "url": "https://prosas.com.br",
+            "status": "Recusado",
+            "info": "Nenhum edital ativo"
+        },
+        {
+            "url": "https://pulitzercenter.org/opportunities/reporting-grants-fellowships",
+            "status": "Sucesso",
+            "info": "Reporting Grants & Fellowships do Pulitzer Center"
+        },
+        {
+            "url": "https://tarbell.org",
+            "status": "Recusado",
+            "info": "Nenhum edital ativo"
+        },
+        {
+            "url": "https://fij.org",
+            "status": "Recusado",
+            "info": "Nenhum edital ativo"
+        },
+        {
+            "url": "https://unesco.org",
+            "status": "Recusado",
+            "info": "Nenhum edital ativo"
+        }
+    ]
+}
