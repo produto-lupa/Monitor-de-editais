@@ -1,164 +1,200 @@
-<!doctype html>
-<html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Monitor de Editais - Agência Lupa</title>
-    <link rel="stylesheet" href="style.css">
-  </head>
-  <body>
-    <header>
-      <div class="header-container">
-        <h1>MONITOR DE EDITAIS</h1>
-        <p>Acompanhe oportunidades, editais e fundos abertos.</p>
-      </div>
-    </header>
-    
-    <main>
-      <div class="search-container">
-        <input type="text" id="searchInput" placeholder="Pesquisar editais (ex: Direitos, Fundo)..." />
-      </div>
-      
-      <div id="editais-container" class="cards-grid">
-        <!-- Editais carregados do editais.json aparecerão aqui -->
-        <p class="loading">Carregando editais...</p>
-      </div>
-    </main>
+<!-- Tela de bloqueio por senha -->
+<div id="login-overlay">
+  <div class="login-box">
+    <h2><span>Área Restrita</span></h2>
+    <p>Esta é uma ferramenta interna. Digite a senha para acessar o Monitor de Editais.</p>
+    <input type="password" id="passwordInput" placeholder="Digite a senha de acesso" />
+    <button id="loginBtn">Entrar</button>
+    <p id="loginError" class="login-error">Senha incorreta. Tente novamente.</p>
+  </div>
+</div>
 
-    <footer class="status-footer">
-       <details>
-          <summary>Status de Monitoramento do Robô</summary>
-          <div id="status-content">Carregando status...</div>
-       </details>
-    </footer>
+<!-- Conteúdo principal do Monitor -->
+<header>
+  <div class="header-container">
+    <h1>MONITOR DE EDITAIS</h1>
+    <p>Acompanhe oportunidades, editais e fundos abertos.</p>
+  </div>
+</header>
 
-    <script>
-      // Lógica principal
-      document.addEventListener('DOMContentLoaded', () => {
-        const container = document.getElementById('editais-container');
-        const searchInput = document.getElementById('searchInput');
-        let todosEditais = [];
+<main>
+  <div class="search-container">
+    <input type="text" id="searchInput" placeholder="Pesquisar editais (ex: Direitos, Fundo)..." />
+  </div>
+  
+  <div id="editais-container" class="cards-grid">
+    <p class="loading">Carregando editais...</p>
+  </div>
+</main>
 
-        // Helper para o formato "19 de dezembro de 2026"
-        function parseDateBR(dateStr) {
-           if (!dateStr) return null;
-           const months = {
-              "janeiro": 0, "fevereiro": 1, "março": 2, "abril": 3, "maio": 4, "junho": 5,
-              "julho": 6, "agosto": 7, "setembro": 8, "outubro": 9, "novembro": 10, "dezembro": 11
-           };
-           const parts = dateStr.toLowerCase().split(' de ');
-           if(parts.length === 3) {
-              const day = parseInt(parts[0], 10);
-              const month = months[parts[1]] !== undefined ? months[parts[1]] : 0;
-              const year = parseInt(parts[2], 10);
-              return new Date(year, month, day, 23, 59, 59);
-           }
-           return null;
-        }
+<footer class="status-footer">
+   <details>
+      <summary>Status de Monitoramento do Robô</summary>
+      <div id="status-content">Carregando status...</div>
+   </details>
+</footer>
 
-        // Verifica se a data do edital passou do dia atual
-        function isFechado(dateStr) {
-           const deadline = parseDateBR(dateStr);
-           if (!deadline) return false;
-           return deadline < new Date();
-        }
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const container = document.getElementById('editais-container');
+    const searchInput = document.getElementById('searchInput');
+    const loginOverlay = document.getElementById('login-overlay');
+    const passwordInput = document.getElementById('passwordInput');
+    const loginBtn = document.getElementById('loginBtn');
+    const loginError = document.getElementById('loginError');
 
-        function renderEditais(editais) {
-           container.innerHTML = '';
-           if (editais.length === 0) {
-              container.innerHTML = '<p class="empty-state">Nenhum edital encontrado.</p>';
-              return;
-           }
+    // SENHA DE ACESSO DA SUA EMPRESA (Pode mudar aqui se quiser)
+    const SENHA_CORRETA = "lupa123";
 
-           editais.forEach(edital => {
-              const fechado = edital.isFechado;
-              const card = document.createElement('div');
-              card.className = `card ${fechado ? 'closed' : ''}`;
-              
-              const statusBadge = fechado 
-                  ? '<span class="badge badge-closed">Encerrado</span>' 
-                  : '<span class="badge badge-open">Inscrições Abertas</span>';
+    let todosEditais = [];
 
-              card.innerHTML = `
-                 <div class="card-header">
-                    ${statusBadge}
-                    <h3>${edital.Nomes}</h3>
-                 </div>
-                 <div class="card-body">
-                    <p class="resumo">${edital.Resumo}</p>
-                    <ul class="detalhes">
-                       <li><strong>Prazo:</strong> ${edital["Prazo de inscrição"] || 'Não especificado'}</li>
-                       <li><strong>Valor:</strong> ${edital["Valor do edital"] || 'Consulte o edital'}</li>
-                       <li><strong>Período:</strong> ${edital["Período de execução do projeto"] || 'Não especificado'}</li>
-                    </ul>
-                 </div>
-                 <div class="card-footer">
-                    <a href="${edital.Link}" target="_blank" rel="noopener noreferrer" class="btn">Acessar Edital</a>
-                 </div>
-              `;
-              container.appendChild(card);
-           });
-        }
+    // Verifica se a senha já está salva na sessão do navegador
+    if (sessionStorage.getItem("monitor_autenticado") === "true") {
+       loginOverlay.style.display = "none";
+       inicializarMonitor();
+    }
 
-        function filtrarEditais() {
-           const termo = searchInput.value.toLowerCase();
-           const filtrados = todosEditais.filter(ed => {
-              return (ed.Nomes && ed.Nomes.toLowerCase().includes(termo)) ||
-                     (ed.Resumo && ed.Resumo.toLowerCase().includes(termo));
-           });
-           renderEditais(filtrados);
-        }
+    // Ação de clique para autenticar
+    loginBtn.addEventListener('click', realizarLogin);
+    passwordInput.addEventListener('keypress', (e) => {
+       if (e.key === 'Enter') realizarLogin();
+    });
 
-        fetch('editais.json')
-           .then(res => {
-              if (!res.ok) throw new Error('Falha HTTP');
-              return res.json();
-           })
-           .then(data => {
-              // Prepara dados
-              todosEditais = data.map(item => ({
-                 ...item,
-                 dateObj: parseDateBR(item["Prazo de inscrição"]),
-                 isFechado: isFechado(item["Prazo de inscrição"])
-              }));
+    function realizarLogin() {
+       if (passwordInput.value === SENHA_CORRETA) {
+          sessionStorage.setItem("monitor_autenticado", "true");
+          loginOverlay.style.display = "none";
+          inicializarMonitor();
+       } else {
+          loginError.style.display = "block";
+          passwordInput.value = "";
+          passwordInput.focus();
+       }
+    }
 
-              // Organiza (Abertos primeiro por prazo menor, depois fechados por prazo mais recente (maior))
-              todosEditais.sort((a, b) => {
-                 if (a.isFechado === b.isFechado) {
-                    if (a.dateObj && b.dateObj) {
-                       return a.isFechado ? (b.dateObj - a.dateObj) : (a.dateObj - b.dateObj);
-                    }
-                    return 0;
-                 }
-                 return a.isFechado ? 1 : -1;
-              });
+    function inicializarMonitor() {
+       carregarEditais();
+       carregarStatus();
+    }
 
-              renderEditais(todosEditais);
-           })
-           .catch(err => {
-              console.error(err);
-              container.innerHTML = '<p class="error">Erro ao ler os dados do edital. Mantenha o arquivo editais.json acessível.</p>';
-           });
+    // Helper para o formato "19 de dezembro de 2026"
+    function parseDateBR(dateStr) {
+       if (!dateStr) return null;
+       const months = {
+          "janeiro": 0, "fevereiro": 1, "março": 2, "abril": 3, "maio": 4, "junho": 5,
+          "julho": 6, "agosto": 7, "setembro": 8, "outubro": 9, "novembro": 10, "dezembro": 11
+       };
+       const parts = dateStr.toLowerCase().split(' de ');
+       if(parts.length === 3) {
+          const day = parseInt(parts[0], 10);
+          const month = months[parts[1]] !== undefined ? months[parts[1]] : 0;
+          const year = parseInt(parts[2], 10);
+          return new Date(year, month, day, 23, 59, 59);
+       }
+       return null;
+    }
 
-        searchInput.addEventListener('input', filtrarEditais);
+    function isFechado(dateStr) {
+       const deadline = parseDateBR(dateStr);
+       if (!deadline) return false;
+       return deadline < new Date();
+    }
 
-        // Carregar Status
-        fetch('status.json')
-           .then(res => res.json())
-           .then(data => {
-              const statusDiv = document.getElementById('status-content');
-              let html = `<p>Última atualização: <strong>${data.ultima_atualizacao}</strong></p>`;
-              html += `<ul><li>Total: ${data.resumo.total_sites} | Sucessos: ${data.resumo.sucessos} | Edital não identificado: ${data.resumo.recusados} | Erros: ${data.resumo.erros}</li></ul>`;
-              html += `<table><thead><tr><th>URL</th><th>Status</th><th>Info</th></tr></thead><tbody>`;
-              data.detalhes.forEach(d => {
-                  let icone = d.status === 'Sucesso' ? '✅' : (d.status === 'Edital não identificado' ? '❌' : '⚠️');
-                  html += `<tr><td>${d.url.substring(0, 30)}...</td><td>${icone} ${d.status}</td><td>${d.info}</td></tr>`;
-              });
-              html += `</tbody></table>`;
-              statusDiv.innerHTML = html;
-           })
-           .catch(() => { document.getElementById('status-content').innerText = 'Status indisponível.'; });
-      });
-    </script>
-  </body>
-</html>
+    function renderEditais(editais) {
+       container.innerHTML = '';
+       if (editais.length === 0) {
+          container.innerHTML = '<p class="empty-state">Nenhum edital encontrado.</p>';
+          return;
+       }
+
+       editais.forEach(edital => {
+          const fechado = edital.isFechado;
+          const card = document.createElement('div');
+          card.className = `card ${fechado ? 'closed' : ''}`;
+          
+          const statusBadge = fechado 
+              ? '<span class="badge badge-closed">Encerrado</span>' 
+              : '<span class="badge badge-open">Inscrições Abertas</span>';
+
+          card.innerHTML = `
+             <div class="card-header">
+                ${statusBadge}
+                <h3>${edital.Nomes}</h3>
+             </div>
+             <div class="card-body">
+                <p class="resumo">${edital.Resumo}</p>
+                <ul class="detalhes">
+                   <li><strong>Prazo:</strong> ${edital["Prazo de inscrição"] || 'Não especificado'}</li>
+                   <li><strong>Valor:</strong> ${edital["Valor do edital"] || 'Consulte o edital'}</li>
+                   <li><strong>Período:</strong> ${edital["Período de execução do projeto"] || 'Não especificado'}</li>
+                </ul>
+             </div>
+             <div class="card-footer">
+                <a href="${edital.Link}" target="_blank" rel="noopener noreferrer" class="btn">Acessar Edital</a>
+             </div>
+          `;
+          container.appendChild(card);
+       });
+    }
+
+    function filtrarEditais() {
+       const termo = searchInput.value.toLowerCase();
+       const filtrados = todosEditais.filter(ed => {
+          return (ed.Nomes && ed.Nomes.toLowerCase().includes(termo)) ||
+                 (ed.Resumo && ed.Resumo.toLowerCase().includes(termo));
+       });
+       renderEditais(filtrados);
+    }
+
+    function carregarEditais() {
+       fetch('editais.json')
+          .then(res => {
+             if (!res.ok) throw new Error('Falha HTTP');
+             return res.json();
+          })
+          .then(data => {
+             todosEditais = data.map(item => ({
+                ...item,
+                dateObj: parseDateBR(item["Prazo de inscrição"]),
+                isFechado: isFechado(item["Prazo de inscrição"])
+             }));
+
+             todosEditais.sort((a, b) => {
+                if (a.isFechado === b.isFechado) {
+                   if (a.dateObj && b.dateObj) {
+                      return a.isFechado ? (b.dateObj - a.dateObj) : (a.dateObj - b.dateObj);
+                   }
+                   return 0;
+                }
+                return a.isFechado ? 1 : -1;
+             });
+
+             renderEditais(todosEditais);
+          })
+          .catch(err => {
+             console.error(err);
+             container.innerHTML = '<p class="error">Erro ao ler os dados do edital. Mantenha o arquivo editais.json acessível.</p>';
+          });
+    }
+
+    searchInput.addEventListener('input', filtrarEditais);
+
+    function carregarStatus() {
+       fetch('status.json')
+          .then(res => res.json())
+          .then(data => {
+             const statusDiv = document.getElementById('status-content');
+             let html = `<p>Última atualização: <strong>${data.ultima_atualizacao}</strong></p>`;
+             html += `<ul><li>Total: ${data.resumo.total_sites} | Sucessos: ${data.resumo.sucessos} | Edital não identificado: ${data.resumo.recusados} | Erros: ${data.resumo.erros}</li></ul>`;
+             html += `<table><thead><tr><th>URL</th><th>Status</th><th>Info</th></tr></thead><tbody>`;
+             data.detalhes.forEach(d => {
+                 let icone = d.status === 'Sucesso' ? '✅' : (d.status === 'Edital não identificado' ? '❌' : '⚠️');
+                 html += `<tr><td>${d.url.substring(0, 30)}...</td><td>${icone} ${d.status}</td><td>${d.info}</td></tr>`;
+             });
+             html += `</tbody></table>`;
+             statusDiv.innerHTML = html;
+          })
+          .catch(() => { document.getElementById('status-content').innerText = 'Status indisponível.'; });
+    }
+  });
+</script>
