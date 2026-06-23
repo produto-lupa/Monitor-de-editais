@@ -146,9 +146,9 @@ def run_scraper():
                 novos_editais.append(edital_final)
                 status_detalhes.append({"url": url, "status": "Sucesso", "info": dados.get("Nomes")})
             else:
-                print(f"[{url}] ❌ Recusado!")
+                print(f"[{url}] ❌ Edital não identificado!")
                 stats["recusados"] += 1
-                status_detalhes.append({"url": url, "status": "Recusado", "info": "Nenhum edital ativo"})
+                status_detalhes.append({"url": url, "status": "Edital não identificado", "info": "Nenhum edital ativo"})
         else:
             stats["erros"] += 1
             status_detalhes.append({"url": url, "status": "Erro", "info": "Falha na análise"})
