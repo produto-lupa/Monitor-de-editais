@@ -1,15 +1,15 @@
 {
-    "ultima_atualizacao": "23/06/2026 às 14:37",
+    "ultima_atualizacao": "23/06/2026 às 20:40",
     "resumo": {
         "total_sites": 21,
-        "sucessos": 3,
-        "recusados": 15,
+        "sucessos": 4,
+        "recusados": 14,
         "erros": 3
     },
     "detalhes": [
         {
             "url": "https://www.abraji.org.br/publicacoes",
-            "status": "Recusado",
+            "status": "Edital não identificado",
             "info": "Nenhum edital ativo"
         },
         {
@@ -19,8 +19,8 @@
         },
         {
             "url": "https://journalism.nyu.edu/career-services/fellowships-and-annual-programs/",
-            "status": "Recusado",
-            "info": "Nenhum edital ativo"
+            "status": "Sucesso",
+            "info": "Albritton Journalism Institute"
         },
         {
             "url": "https://codesinfo.org.br",
@@ -29,22 +29,22 @@
         },
         {
             "url": "https://www.fundacaoitau.org.br/noticias",
-            "status": "Recusado",
+            "status": "Edital não identificado",
             "info": "Nenhum edital ativo"
         },
         {
             "url": "https://www.fundobrasil.org.br/nosso-trabalho/apoio-a-sociedade-civil/editais-gerais-e-especificos/?status=aberto",
-            "status": "Recusado",
+            "status": "Edital não identificado",
             "info": "Nenhum edital ativo"
         },
         {
             "url": "https://fundodejornalismo.com.br/",
-            "status": "Recusado",
+            "status": "Edital não identificado",
             "info": "Nenhum edital ativo"
         },
         {
             "url": "https://blog.google/intl/pt-br/novidades/",
-            "status": "Recusado",
+            "status": "Edital não identificado",
             "info": "Nenhum edital ativo"
         },
         {
@@ -54,7 +54,7 @@
         },
         {
             "url": "https://serrapilheira.org/programa-de-jornalismo-e-midia/",
-            "status": "Recusado",
+            "status": "Edital não identificado",
             "info": "Nenhum edital ativo"
         },
         {
@@ -64,7 +64,7 @@
         },
         {
             "url": "https://journalismai.info",
-            "status": "Recusado",
+            "status": "Edital não identificado",
             "info": "Nenhum edital ativo"
         },
         {
@@ -74,22 +74,22 @@
         },
         {
             "url": "https://mediaimpactfunders.org/our-work/news/",
-            "status": "Recusado",
+            "status": "Edital não identificado",
             "info": "Nenhum edital ativo"
         },
         {
             "url": "https://oneworldmedia.org.uk/latest/",
-            "status": "Recusado",
+            "status": "Edital não identificado",
             "info": "Nenhum edital ativo"
         },
         {
             "url": "https://www.opensocietyfoundations.org/newsroom",
-            "status": "Recusado",
+            "status": "Edital não identificado",
             "info": "Nenhum edital ativo"
         },
         {
             "url": "https://prosas.com.br",
-            "status": "Recusado",
+            "status": "Edital não identificado",
             "info": "Nenhum edital ativo"
         },
         {
@@ -99,17 +99,17 @@
         },
         {
             "url": "https://tarbell.org",
-            "status": "Recusado",
+            "status": "Edital não identificado",
             "info": "Nenhum edital ativo"
         },
         {
             "url": "https://fij.org",
-            "status": "Recusado",
+            "status": "Edital não identificado",
             "info": "Nenhum edital ativo"
         },
         {
             "url": "https://unesco.org",
-            "status": "Recusado",
+            "status": "Edital não identificado",
             "info": "Nenhum edital ativo"
         }
     ]
