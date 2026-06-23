@@ -1,0 +1,21 @@
+{
+    "ultima_atualizacao": "23/06/2026 às 13:38",
+    "resumo": {
+        "total_sites": 2,
+        "sucessos": 0,
+        "recusados": 0,
+        "erros": 2
+    },
+    "detalhes": [
+        {
+            "url": "https://www.abraji.org.br/publicacoes",
+            "status": "Erro",
+            "info": "Falha na análise"
+        },
+        {
+            "url": "https://www.fundobrasil.org.br/nosso-trabalho/apoio-a-sociedade-civil/editais-gerais-e-especificos/?status=aberto",
+            "status": "Erro",
+            "info": "Falha na análise"
+        }
+    ]
+}
