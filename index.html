@@ -148,10 +148,10 @@
            .then(data => {
               const statusDiv = document.getElementById('status-content');
               let html = `<p>Última atualização: <strong>${data.ultima_atualizacao}</strong></p>`;
-              html += `<ul><li>Total: ${data.resumo.total_sites} | Sucessos: ${data.resumo.sucessos} | Recusados: ${data.resumo.recusados} | Erros: ${data.resumo.erros}</li></ul>`;
+              html += `<ul><li>Total: ${data.resumo.total_sites} | Sucessos: ${data.resumo.sucessos} | Edital não identificado: ${data.resumo.recusados} | Erros: ${data.resumo.erros}</li></ul>`;
               html += `<table><thead><tr><th>URL</th><th>Status</th><th>Info</th></tr></thead><tbody>`;
               data.detalhes.forEach(d => {
-                  let icone = d.status === 'Sucesso' ? '✅' : (d.status === 'Recusado' ? '❌' : '⚠️');
+                  let icone = d.status === 'Sucesso' ? '✅' : (d.status === 'Edital não identificado' ? '❌' : '⚠️');
                   html += `<tr><td>${d.url.substring(0, 30)}...</td><td>${icone} ${d.status}</td><td>${d.info}</td></tr>`;
               });
               html += `</tbody></table>`;
@@ -162,4 +162,3 @@
     </script>
   </body>
 </html>
-
