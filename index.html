@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Monitor de Editais - Agência Lupa</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/style.css" />
   </head>
   <body>
     <header>
@@ -24,6 +24,13 @@
         <p class="loading">Carregando editais...</p>
       </div>
     </main>
+
+    <footer class="status-footer">
+       <details>
+          <summary>Status de Monitoramento do Robô</summary>
+          <div id="status-content">Carregando status...</div>
+       </details>
+    </footer>
 
     <script>
       // Lógica principal
@@ -102,7 +109,7 @@
            renderEditais(filtrados);
         }
 
-        fetch('editais.json')
+        fetch('/editais.json')
            .then(res => {
               if (!res.ok) throw new Error('Falha HTTP');
               return res.json();
@@ -134,6 +141,23 @@
            });
 
         searchInput.addEventListener('input', filtrarEditais);
+
+        // Carregar Status
+        fetch('/status.json')
+           .then(res => res.json())
+           .then(data => {
+              const statusDiv = document.getElementById('status-content');
+              let html = `<p>Última atualização: <strong>${data.ultima_atualizacao}</strong></p>`;
+              html += `<ul><li>Total: ${data.resumo.total_sites} | Sucessos: ${data.resumo.sucessos} | Recusados: ${data.resumo.recusados} | Erros: ${data.resumo.erros}</li></ul>`;
+              html += `<table><thead><tr><th>URL</th><th>Status</th><th>Info</th></tr></thead><tbody>`;
+              data.detalhes.forEach(d => {
+                  let icone = d.status === 'Sucesso' ? '✅' : (d.status === 'Recusado' ? '❌' : '⚠️');
+                  html += `<tr><td>${d.url.substring(0, 30)}...</td><td>${icone} ${d.status}</td><td>${d.info}</td></tr>`;
+              });
+              html += `</tbody></table>`;
+              statusDiv.innerHTML = html;
+           })
+           .catch(() => { document.getElementById('status-content').innerText = 'Status indisponível.'; });
       });
     </script>
   </body>

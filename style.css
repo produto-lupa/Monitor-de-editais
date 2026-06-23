@@ -209,6 +209,28 @@ main {
   font-size: 1.1rem;
 }
 
-.error {
-  color: #ff5555;
+.status-footer {
+  margin-top: 5rem;
+  padding: 2rem 1rem;
+  border-top: 1px solid #333;
+  color: var(--text-muted);
+}
+
+.status-footer summary {
+  color: var(--accent);
+  cursor: pointer;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.status-footer table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  font-size: 0.85rem;
+}
+
+.status-footer th, .status-footer td {
+  padding: 0.5rem;
+  border: 1px solid #333;
 }

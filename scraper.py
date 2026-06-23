@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 from google import genai
 from pydantic import BaseModel, Field
 import typing
+from datetime import datetime
 
 # Estrutura esperada de saída usando Pydantic para forçar as chaves corretas no JSON
 class EditalOutput(BaseModel):
@@ -16,8 +17,8 @@ class EditalOutput(BaseModel):
     Periodo_de_execucao_do_projeto: str = Field(alias="Período de execução do projeto")
     is_valid_edital: bool
 
-def obter_texto_pagina(url: str) -> str:
-    """Faz o download da página html e extrai apenas o texto visível."""
+def obter_texto_pagina(url: str) -> typing.Tuple[str, str]:
+    """Faz o download da página html e extrai apenas o texto visível. Retorna (texto, erro_mensagem)."""
     print(f"[{url}] Baixando página...")
     try:
         # Header genérico para evitar bloqueios triviais
@@ -34,11 +35,11 @@ def obter_texto_pagina(url: str) -> str:
             tag.decompose()
             
         texto = soup.get_text(separator=' ', strip=True)
-        # Limita o texto a cerca de 20.000 caracteres para economizar tokens e tempo do Gemini
-        return texto[:20000] 
+        return texto[:20000], ""
+    except requests.exceptions.Timeout:
+        return "", "Tempo limite atingido (15s)"
     except Exception as e:
-        print(f"[{url}] Erro ao baixar ou processar a página: {e}")
-        return ""
+        return "", str(e)
 
 def analisar_edital_com_gemini(texto_pagina: str, url: str) -> typing.Optional[dict]:
     """Envia o texto limpo ao Gemini e exige a estrutura JSON de resposta."""
@@ -67,7 +68,7 @@ def analisar_edital_com_gemini(texto_pagina: str, url: str) -> typing.Optional[d
     
     try:
         response = client.models.generate_content(
-            model='gemini-3.5-flash',
+            model='gemini-1.5-flash',
             contents=prompt,
             config={
                 'response_mime_type': 'application/json',
@@ -86,7 +87,7 @@ def run_scraper():
     print("Iniciando fase de raspagem...\n")
     
     diretorio_atual = os.path.dirname(os.path.abspath(__file__))
-    caminho_arquivo_json = os.path.join(diretorio_atual, 'editais.json')
+    caminho_arquivo_json = os.path.join(diretorio_atual, 'public', 'editais.json')
     caminho_arquivo_urls = os.path.join(diretorio_atual, 'urls.txt')
     
     # Valida se o arquivo urls.txt existe
@@ -115,39 +116,61 @@ def run_scraper():
     links_existentes = {edital.get("Link") for edital in editais_existentes}
     novos_editais = []
     
-    # 2. Processa cada URL
+    # Estrutura do status
+    status_detalhes = []
+    stats = {"total_sites": len(urls_para_analisar), "sucessos": 0, "recusados": 0, "erros": 0}
+    
     for url in urls_para_analisar:
-        if url in links_existentes:
-            print(f"[{url}] Este edital já consta em editais.json. Ignorando.")
+        texto, erro_msg = obter_texto_pagina(url)
+        
+        if erro_msg:
+            print(f"[{url}] ⚠️ Erro: {erro_msg}")
+            stats["erros"] += 1
+            status_detalhes.append({"url": url, "status": "Erro", "info": erro_msg})
             continue
-            
-        texto = obter_texto_pagina(url)
-        if not texto:
+
+        if url in links_existentes:
+            print(f"[{url}] Já existe.")
+            # Para manter o status completo, vou tratar como "Sucesso (ignorado)"
+            stats["sucessos"] += 1
+            status_detalhes.append({"url": url, "status": "Sucesso", "info": "Já monitorado"})
             continue
             
         dados = analisar_edital_com_gemini(texto, url)
         
         if dados:
             if dados.get("is_valid_edital"):
-                print(f"[{url}] ✅ Sucesso! Edital válido encontrado: {dados.get('Nomes')}")
-                # Faremos uma cópia ignorando a flag booleana
+                print(f"[{url}] ✅ Sucesso!")
+                stats["sucessos"] += 1
                 edital_final = {k: v for k, v in dados.items() if k != "is_valid_edital"}
                 novos_editais.append(edital_final)
+                status_detalhes.append({"url": url, "status": "Sucesso", "info": dados.get("Nomes")})
             else:
-                print(f"[{url}] ❌ Recusado! A IA indicou que o texto não é de um edital válido.")
+                print(f"[{url}] ❌ Recusado!")
+                stats["recusados"] += 1
+                status_detalhes.append({"url": url, "status": "Recusado", "info": "Nenhum edital ativo"})
+        else:
+            stats["erros"] += 1
+            status_detalhes.append({"url": url, "status": "Erro", "info": "Falha na análise"})
 
-    # 3. Atualiza JSON
+    # Salvar editais
     if novos_editais:
-        # Colocamos os mais novos primeiro
         lista_atualizada = novos_editais + editais_existentes
-        
         os.makedirs(os.path.dirname(caminho_arquivo_json), exist_ok=True)
         with open(caminho_arquivo_json, 'w', encoding='utf-8') as f:
             json.dump(lista_atualizada, f, ensure_ascii=False, indent=4)
             
-        print(f"\nConcluído! {len(novos_editais)} novo(s) edital(is) salvo(s) com sucesso em editais.json.")
-    else:
-        print("\nConcluído! Não foram adicionados novos editais à lista.")
+    # Salvar status
+    caminho_arquivo_status = os.path.join(diretorio_atual, 'public', 'status.json')
+    status_data = {
+        "ultima_atualizacao": datetime.now().strftime('%d/%m/%Y às %H:%M'),
+        "resumo": stats,
+        "detalhes": status_detalhes
+    }
+    with open(caminho_arquivo_status, 'w', encoding='utf-8') as f:
+        json.dump(status_data, f, ensure_ascii=False, indent=4)
+            
+    print(f"\nConcluído! Atualizado em {caminho_arquivo_status}")
 
 if __name__ == "__main__":
     run_scraper()
