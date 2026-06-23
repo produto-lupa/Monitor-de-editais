@@ -1,16 +1,16 @@
 {
-    "ultima_atualizacao": "23/06/2026 às 21:10",
+    "ultima_atualizacao": "23/06/2026 às 21:20",
     "resumo": {
         "total_sites": 21,
-        "sucessos": 4,
-        "recusados": 14,
+        "sucessos": 7,
+        "recusados": 11,
         "erros": 3
     },
     "detalhes": [
         {
             "url": "https://www.abraji.org.br/publicacoes",
-            "status": "Edital não identificado",
-            "info": "Nenhum edital ativo"
+            "status": "Sucesso",
+            "info": "Call for Applications — Reporting Grants \"A Today and a Tomorrow with Climate Adaptation\""
         },
         {
             "url": "https://ajor.org.br",
@@ -104,13 +104,13 @@
         },
         {
             "url": "https://fij.org",
-            "status": "Edital não identificado",
-            "info": "Nenhum edital ativo"
+            "status": "Sucesso",
+            "info": "Edital de Bolsas do Fundo para Jornalismo Investigativo"
         },
         {
             "url": "https://unesco.org",
-            "status": "Edital não identificado",
-            "info": "Nenhum edital ativo"
+            "status": "Sucesso",
+            "info": "Photo Contest \"Nomadic Culture of Central Asia: Preserving Traditions and Biodiversity\""
         }
     ]
 }
