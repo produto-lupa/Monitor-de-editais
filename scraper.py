@@ -86,4 +86,6 @@ def analisar_edital_com_gemini(texto_pagina: str, url: str) -> typing.Optional[d
 def run_scraper():
     print("Iniciando fase de raspagem...\n")
     
-    diretorio_atual = os.path.dirname(os.path.abs
+diretorio_atual = os.path.dirname(os.path.abspath(__file__))
+    caminho_arquivo_json = os.path.join(diretorio_atual, 'editais.json')
+    caminho_arquivo_urls = os.path.join(diretorio_atual, 'urls.txt')
