@@ -67,7 +67,7 @@ def analisar_edital_com_gemini(texto_pagina: str, url: str) -> typing.Optional[d
     
     try:
         response = client.models.generate_content(
-            model='gemini-1.5-flash',
+            model='gemini-3.5-flash',
             contents=prompt,
             config={
                 'response_mime_type': 'application/json',
