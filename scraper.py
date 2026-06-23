@@ -68,7 +68,7 @@ def analisar_edital_com_gemini(texto_pagina: str, url: str) -> typing.Optional[d
     
     try:
         response = client.models.generate_content(
-            model='gemini-1.5-flash',
+            model='gemini-2.5-flash',
             contents=prompt,
             config={
                 'response_mime_type': 'application/json',
@@ -87,7 +87,7 @@ def run_scraper():
     print("Iniciando fase de raspagem...\n")
     
     diretorio_atual = os.path.dirname(os.path.abspath(__file__))
-    caminho_arquivo_json = os.path.join(diretorio_atual, 'public', 'editais.json')
+    caminho_arquivo_json = os.path.join(diretorio_atual, 'editais.json')
     caminho_arquivo_urls = os.path.join(diretorio_atual, 'urls.txt')
     
     # Valida se o arquivo urls.txt existe
@@ -161,7 +161,7 @@ def run_scraper():
             json.dump(lista_atualizada, f, ensure_ascii=False, indent=4)
             
     # Salvar status
-    caminho_arquivo_status = os.path.join(diretorio_atual, 'public', 'status.json')
+    caminho_arquivo_status = os.path.join(diretorio_atual, 'status.json')
     status_data = {
         "ultima_atualizacao": datetime.now().strftime('%d/%m/%Y às %H:%M'),
         "resumo": stats,
