@@ -1,10 +1,10 @@
 {
-    "ultima_atualizacao": "24/06/2026 às 12:53",
+    "ultima_atualizacao": "25/06/2026 às 02:43",
     "resumo": {
         "total_sites": 21,
         "sucessos": 7,
-        "recusados": 11,
-        "erros": 3
+        "recusados": 9,
+        "erros": 5
     },
     "detalhes": [
         {
@@ -39,8 +39,8 @@
         },
         {
             "url": "https://fundodejornalismo.com.br/",
-            "status": "Edital não identificado",
-            "info": "Nenhum edital ativo"
+            "status": "Erro",
+            "info": "HTTPSConnectionPool(host='fundodejornalismo.com.br', port=443): Max retries exceeded with url: / (Caused by NewConnectionError(\"HTTPSConnection(host='fundodejornalismo.com.br', port=443): Failed to establish a new connection: [Errno 101] Network is unreachable\"))"
         },
         {
             "url": "https://blog.google/intl/pt-br/novidades/",
@@ -99,8 +99,8 @@
         },
         {
             "url": "https://tarbell.org",
-            "status": "Edital não identificado",
-            "info": "Nenhum edital ativo"
+            "status": "Erro",
+            "info": "503 Server Error: Service Unavailable for url: https://tarbell.org/"
         },
         {
             "url": "https://fij.org",
